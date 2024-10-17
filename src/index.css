@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#hs-vertically-centered-modal
+  > div
+  > div
+  > div.p-4.overflow-y-auto
+  > form
+  > div:nth-child(5)
+  > div {
+  width: 75%;
+}
