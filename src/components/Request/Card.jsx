@@ -1,11 +1,11 @@
 import axios from "axios";
-import { HSStaticMethods } from "preline";
+import { HSOverlay, HSStaticMethods } from "preline";
 import React from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import useSWR, { mutate } from "swr";
 
-const CardUser = () => {
+const Card = () => {
   const location = useLocation();
 
   React.useEffect(() => {
@@ -30,10 +30,11 @@ const CardUser = () => {
     }
   }, [data]);
 
-  const handleDelete = async (id) => {
+  const handleUpdate = async (id, status) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:5000/api/portfolios/${id}`
+      const response = await axios.patch(
+        `http://localhost:5000/api/portfolios/${id}`,
+        { status }
       );
       mutate("portfolios");
       toast.success(response.data.msg, {
@@ -45,6 +46,9 @@ const CardUser = () => {
         draggable: true,
         progress: undefined,
       });
+      setTimeout(() => {
+        window.location.reload();
+      }, [1500]);
     } catch (error) {
       console.log(error);
     }
@@ -115,30 +119,30 @@ const CardUser = () => {
                             type="button"
                             className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-primary text-white focus:outline-none px-4 py-2 disabled:opacity-50 disabled:pointer-events-none"
                             aria-expanded="false"
-                            aria-controls={`hs-portfolio-view-${d.uuid}`}
-                            data-hs-overlay={`#hs-portfolio-view-${d.uuid}`}
+                            aria-controls={`hs-permintaan-view-${d.uuid}`}
+                            data-hs-overlay={`#hs-permintaan-view-${d.uuid}`}
                           >
                             Lihat
                           </button>
                           <div
-                            id={`hs-portfolio-view-${d.uuid}`}
+                            id={`hs-permintaan-view-${d.uuid}`}
                             className="hs-overlay hidden size-full fixed top-0 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none"
-                            aria-labelledby={`hs-portfolio-view-label-${d.uuid}`}
+                            aria-labelledby={`hs-permintaan-view-label-${d.uuid}`}
                           >
                             <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)] 2xl:max-w-[67.5rem] lg:max-w-2xl xl:max-w-5xl flex items-center">
                               <div className="lg:w-full xl:w-full 2xl:w-full lg:min-h-[450px] xl:min-h-[500px] 2xl:min-h-[500px] max-w-[1920px]:min-h-[800px] flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto">
                                 <div className="flex justify-between items-center py-3 px-4">
                                   <h3
-                                    id={`hs-portfolio-view-label-${d.uuid}`}
+                                    id={`hs-permintaan-view-label-${d.uuid}`}
                                     className="font-bold text-gray-800"
                                   >
-                                    Lihat Portofolio
+                                    Lihat Permintaan Portofolio
                                   </h3>
                                   <button
                                     type="button"
                                     className="size-8 inline-flex justify-center items-center gap-x-2 rounded-full border border-transparent bg-gray-100 text-gray-800 hover:bg-gray-200 focus:outline-none focus:bg-gray-200 disabled:opacity-50 disabled:pointer-events-none"
                                     aria-label="Close"
-                                    data-hs-overlay={`#hs-portfolio-view-${d.uuid}`}
+                                    data-hs-overlay={`#hs-permintaan-view-${d.uuid}`}
                                   >
                                     <span className="sr-only">Close</span>
                                     <svg
@@ -164,17 +168,30 @@ const CardUser = () => {
                                     title={d.images}
                                     className="w-full lg:h-[400px] 2xl:h-[500px] max-w-[1920px]:h-[700px] object-cover object-center"
                                   ></iframe>
+                                  <div className="flex items-center justify-end mt-5 space-x-5">
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-[#ff3e1c] text-white focus:outline-none px-4 py-2 disabled:opacity-50 disabled:pointer-events-none"
+                                      onClick={() =>
+                                        handleUpdate(d.uuid, "ditolak")
+                                      }
+                                    >
+                                      Tolak
+                                    </button>
+                                    <button
+                                      type="button"
+                                      className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-[#56f55b] text-white focus:outline-none px-4 py-2 disabled:opacity-50 disabled:pointer-events-none"
+                                      onClick={() =>
+                                        handleUpdate(d.uuid, "diterima")
+                                      }
+                                    >
+                                      Terima
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                          <button
-                            type="button"
-                            onClick={() => handleDelete(d.uuid)}
-                            className="inline-flex items-center gap-x-2 text-sm font-semibold rounded-xl border border-transparent bg-[#ff3e1c] text-white focus:outline-none px-4 py-2 disabled:opacity-50 disabled:pointer-events-none"
-                          >
-                            Hapus
-                          </button>
                         </div>
                       </td>
                     </tr>
@@ -189,4 +206,4 @@ const CardUser = () => {
   );
 };
 
-export default CardUser;
+export default Card;

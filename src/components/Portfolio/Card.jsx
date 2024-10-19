@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import useSWR, { mutate } from "swr";
 
-const CardUser = () => {
+const Card = () => {
   const location = useLocation();
 
   React.useEffect(() => {
@@ -189,4 +189,4 @@ const CardUser = () => {
   );
 };
 
-export default CardUser;
+export default Card;

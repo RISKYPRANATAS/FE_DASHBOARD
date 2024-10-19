@@ -33,8 +33,6 @@ const Card = () => {
 
   const totalPortfolios = portfolios.data.length;
 
-  console.log(totalPortfolios);
-
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 min-[1920px]:grid-cols-7 gap-3">
       <div className="p-5 border border-gray-200 bg-[#55F65B] rounded-lg flex flex-col gap-y-5 lg:gap-y-10 2xl:gap-y-7">
